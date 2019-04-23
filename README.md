@@ -12,9 +12,9 @@ require 'testrail-cucumber'
 ```
 
 #### Sync Case ID in your BDD scenario
-Prefix TestRail Case ID on start of your cucumber scenario
+Prefix TestRail Case ID on start of your cucumber scenario; say, C860
 ```
-@tag
+  @your_tag
   Scenario: C860 Verify the home page
     Given I navigate to "home" page
     Then I verify the home page
