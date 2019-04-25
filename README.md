@@ -22,8 +22,8 @@ Prefix TestRail Case ID on start of your cucumber scenario; say, C860
 
 #### Config TestRail details
 
-- Create a testrail config file, `testrail_config.yml` in the parent folder 
-- Fill up the testrail details on right hand side of the fields (url, user, password, and run_id); the `run_id` has to be generated from the testrail account (say, 111)
+- Create a testrail config file, `testrail_config.yml` in the project parent folder 
+- Fill up the testrail details on right hand side of the fields (url, user, password, and run_id); `run_id` is the dynamically generated id from your testrail account (say, `run_id: 111`)
 
 ```
 testrail:
@@ -37,4 +37,11 @@ testrail:
 ```
 After do |scenario|
   TestrailCucumber::UpdateTestRails.new(scenario).upload_result
+end
+```
+
+#### Is there a demo available for this gem?
+Yes, you can use this demo as an example, https://github.com/prashanth-sams/testrail-cucumber
+```
+rake test
 ```
