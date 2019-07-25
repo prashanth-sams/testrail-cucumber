@@ -1,5 +1,7 @@
 # testrail-cucumber
-Sync Automation results with your testrail suite
+[![Gem Version](https://badge.fury.io/rb/testrail-cucumber.svg)](http://badge.fury.io/rb/testrail-cucumber)
+> Sync Automation results with your testrail suite
+
 
 #### Install gem file
 ```
