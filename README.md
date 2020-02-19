@@ -1,49 +1,93 @@
 # testrail-cucumber
 [![Gem Version](https://badge.fury.io/rb/testrail-cucumber.svg)](http://badge.fury.io/rb/testrail-cucumber)
-> Sync Automation results with your testrail suite
+> Sync `cucumber` automation test results with your testrail suite. Discover an example with Cucumber in this gem source.
 
+### Features
+- [x] Update test results in the existing test run
+- [x] Create dynamic test run and update test results in it
+- [x] Update multi-testrail cases's status from a single automation scenario 
 
-#### Install gem file
-```
+## Installation
+Add this line to your application's Gemfile:
+```ruby
 gem 'testrail-cucumber'
 ```
 
-#### Import the library in your env file
+And then execute:
+```bash
+$ bundle
+```
+
+Or install it yourself as:
+```bash
+$ gem install testrail-cucumber
+```
+
+**Import the library in your `env.rb` file**
 ```
 require 'testrail-cucumber'
 ```
 
-#### Sync Case ID in your BDD scenario
-Prefix TestRail Case ID on start of your cucumber scenario; say, C860
+## Usage
+
+#### Update one or multiple case(s) at a time
+Prefix testrail case id(s) on start of your cucumber scenario or scenario outline; say, `C860`
 ```
   @your_tag
   Scenario: C860 Verify the home page
     Given I navigate to "home" page
     Then I verify the home page
+      
+  Scenario: C860 C862 C863 Verify the home page
+    Given I navigate to "home" page
+    Then I verify the home page
+  
+  Scenario Outline: C853 Verify Google search
+    And I search for <keyword>
+    Then I verify <result> in the search result page
+
+    Examples:
+      | keyword | result     |
+      | Jesus   | Jesus      |
+      | Bible   | My saviour |
 ```
 
-#### Config TestRail details
+#### Configuration
 
-- Create a testrail config file, `testrail_config.yml` in the project parent folder 
-- Fill up the testrail details on right hand side of the fields (url, user, password, and run_id); `run_id` is the dynamically generated id from your testrail account (say, `run_id: 111`)
+1. Create a config file, `testrail_config.yml` in the project's parent folder
+2. Enter the testrail details based on demand
+3. To execute tests against the existing `Test Run`,
+    ```yaml
+    testrail:
+      url: https://your_url.testrail.io/
+      user: your@email.com
+      password: ******
+      run_id: 111
+    ```
+    Here, `run_id` is the dynamically generated id from your testrail account (say, `run_id: 111`)
 
-```
-testrail:
-  url: https://your_url.testrail.io/
-  user: your@email.com
-  password: your_password
-  run_id: your_run_id
-```
+4. To create a dynamic `Test Run` and to update results,
+    ```yaml
+    testrail:
+      url: https://your_url.testrail.io/
+      user: your@email.com
+      password: ******
+      project_id: 10
+      suite_id: 110
+    ```
+    Here, `project_id` and `suite_id` are the dynamically generated id from your testrail account; `run_id` is optional in this case.
 
-#### Update the results through `Hooks` on end of each test
+#### Hooks
+
+Update the results through `Hooks` on end of each test
 ```
 After do |scenario|
   TestrailCucumber::UpdateTestRails.new(scenario).upload_result
 end
 ```
 
-#### Is there a demo available for this gem?
-Yes, you can use this demo as an example, https://github.com/prashanth-sams/testrail-cucumber
+#### Is there any demo available for this gem?
+Yes, you can use this `cucumber` demo as an example, https://github.com/prashanth-sams/testrail-cucumber/features
 ```
 rake test
 ```
