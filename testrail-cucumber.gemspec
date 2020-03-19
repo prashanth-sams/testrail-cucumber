@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
     s.licenses      = ['MIT']
     s.author        = ["Prashanth Sams"]
     s.email         = ['sams.prashanth@gmail.com']
-    s.summary       = "Sync cucumber automation test results with your testrail suite"
+    s.summary       = "Sync cucumber automation test results with your testrail suite. Discover an example with Cucumber in this gem source."
     s.homepage      = "https://github.com/prashanth-sams/testrail-cucumber"
     s.files         = ["lib/testrail-cucumber.rb", "lib/testrail-cucumber/api-client.rb", "lib/testrail-cucumber/update-testrails.rb", "lib/testrail-cucumber/version.rb"]
     s.require_paths = ["lib"]
