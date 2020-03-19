@@ -15,6 +15,7 @@ module TestrailCucumber
             end
 
             setup_testrail_client
+            config_validator if $config_validator.nil?
         end
     
         def upload_result
@@ -36,6 +37,7 @@ module TestrailCucumber
             @run_id = @@run_id = client.create_test_run("add_run/#{@config['project_id']}", { "suite_id": @config['suite_id']}) if @run_id.nil?
 
             case_list.map do |case_id|
+                check_avail(:case_id, case_id)
                 response = client.send_post(
                     "add_result_for_case/#{@run_id}/#{case_id}",
                     { status_id: status_id }
@@ -56,6 +58,17 @@ module TestrailCucumber
             @client.user = @config['user']
             @client.password = @config['password']
         end
+
+        def config_validator
+            config_hash = {:project_id => @config['project_id'], :suite_id => @config['suite_id'], :run_id => @config['run_id']}
+            config_hash.map do |key, value|
+                next if value.nil?
+                check_avail(key, value)
+            end
+
+            cleaner if [@config['project_id'], @config['clean_testrun'], @config['run_id'].nil?].all?
+            $config_validator = true
+        end
     
         def get_status_id(status)
             case status
@@ -73,6 +86,29 @@ module TestrailCucumber
                 raise 'missing step definition'
             else
                 raise 'unexpected scenario status passed'
+            end
+        end
+
+        def cleaner
+            test_run_list = client.send_get("get_runs/#{@config['project_id']}")
+            test_run_list.map do |list|
+                client.send_post("delete_run/#{list['id']}", {"suite_id": @config['suite_id']})
+            end
+        end
+
+        def check_avail(label, id)
+            case label
+            when :project_id
+                warn("\n###################### \ninvalid #project_id: #{id} \n######################") if client.send_get("get_project/#{id}").nil? || client.send_get("get_project/#{id}")['error'] != nil
+            when :suite_id
+                warn("\n###################### \ninvalid #suite_id: #{id} \n######################") if client.send_get("get_suite/#{id}").nil? || client.send_get("get_suite/#{id}")['error'] != nil
+            when :run_id
+                warn("\n###################### \ninvalid #run_id: #{id} \n######################") if client.send_get("get_run/#{id}").nil? || client.send_get("get_run/#{id}")['error'] != nil
+            when :case_id
+                return if client.send_get("get_case/#{id}").class == Integer
+                warn("\n###################### \ninvalid #case_id: #{id} \n######################") if client.send_get("get_case/#{id}").nil? || client.send_get("get_case/#{id}")['error'] != nil
+            else
+                p "no config available"
             end
         end
     end 

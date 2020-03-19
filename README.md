@@ -5,7 +5,8 @@
 ### Features
 - [x] Update test results in the existing test run
 - [x] Create dynamic test run and update test results in it
-- [x] Update multi-testrail cases's status from a single automation scenario 
+- [x] Update multi-testrail cases's status from a single automation scenario
+- [x] Delete/clean all the existing test runs in a project's suite before test run 
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -76,6 +77,18 @@ Prefix testrail case id(s) on start of your cucumber scenario or scenario outlin
       suite_id: 110
     ```
     Here, `project_id` and `suite_id` are the dynamically generated id from your testrail account; `run_id` is optional in this case.
+
+5. To delete all test-runs before execution,
+    ```yaml
+    testrail:
+      url: https://your_url.testrail.io/
+      user: your@email.com
+      password: ******
+      clean_testrun: true
+      project_id: 10
+      suite_id: 110
+    ```
+    Set, `clean_testrun: false` if you don't want to clean the existing test runs; but this keyword is optional.
 
 #### Hooks
 
