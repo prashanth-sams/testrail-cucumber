@@ -9,6 +9,7 @@
 - [x] Delete/clean all the existing test runs in a project's suite before test run 
 - [x] Skip specific test-runs from deletion, when `clean_testrun` is set `true`
 - [x] Disable `testrail-rspec` execution on-demand
+- [x] Support for environment variables to pass testrail config values
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -114,7 +115,20 @@ Prefix testrail case id(s) on start of your cucumber scenario or scenario outlin
       run_id: 111
       allow: no
     ```
-    Here, `allow: yes` is optional.
+    Here, `allow: yes` is optional. 
+
+8. Use Environment variables to pass testrail config values 
+    ```yaml
+    testrail:
+      url: ENV['URL']
+      user: ENV['TESTRAIL_USER']
+      password: ENV['TESTRAIL_PASSWORD']
+      run_id: ENV['RUN_ID']
+      clean_testrun: false
+      project_id: 10
+      suite_id: 110
+    ```
+    Example, `rake ./demo_spec.rb TESTRAIL_USER=your@email.com TESTRAIL_PASSWORD=****** RUN_ID=564 URL=https://your_url.testrail.io/` 
 
 #### Hooks
 
